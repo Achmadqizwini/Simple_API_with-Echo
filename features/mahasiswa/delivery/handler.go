@@ -25,13 +25,13 @@ func New(service mahasiswa.ServiceInterface, e *echo.Echo) {
 }
 
 func (delivery *MahasiswaDelivery) Create(c echo.Context) error {
-	userInput := MahasiswaRequest{}
+	userInput := mahasiswa.Core{}
 	errBind := c.Bind(&userInput)
 	if errBind != nil {
 		return c.JSON(http.StatusBadRequest, helper.FailedResponse("Error binding data "+errBind.Error()))
 	}
-	dataCore := requestToCore(userInput)
-	err := delivery.mahasiswaService.Create(dataCore)
+
+	err := delivery.mahasiswaService.Create(userInput)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, helper.FailedResponse("failed insert data"+err.Error()))
 	}
@@ -44,14 +44,13 @@ func (delivery *MahasiswaDelivery) Update(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, helper.BadRequest(errConv.Error()))
 	}
 
-	userInput := MahasiswaRequest{}
+	userInput := mahasiswa.Core{}
 	errBind := c.Bind(&userInput)
 	if errBind != nil {
 		return c.JSON(http.StatusBadRequest, helper.FailedResponse("Error binding data "+errBind.Error()))
 	}
 
-	dataCore := requestToCore(userInput)
-	errUpt := delivery.mahasiswaService.Update(dataCore, id)
+	errUpt := delivery.mahasiswaService.Update(userInput, id)
 	if errUpt != nil {
 		return c.JSON(http.StatusBadRequest, helper.FailedResponse("Error Db update "+errUpt.Error()))
 	}
@@ -84,7 +83,5 @@ func (delivery *MahasiswaDelivery) Read(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, helper.FailedResponse(err.Error()))
 	}
 
-	dataResponse := fromCoreList(results)
-
-	return c.JSON(http.StatusOK, helper.SuccessWithDataResponse("Success read all data", dataResponse))
+	return c.JSON(http.StatusOK, helper.SuccessWithDataResponse("Success read all data", results))
 }

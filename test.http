@@ -1,0 +1,14 @@
+POST http://localhost:8080/mahasiswa
+Content-Type: application/json
+Content-Type: application/xml
+
+{
+    "nama" : "Ronaldo",
+    "alamat": "MMadrid"
+}
+### 
+
+GET http://localhost:8080/mahasiswa/1
+
+###
+DELETE  http://localhost:8080/mahasiswa/18

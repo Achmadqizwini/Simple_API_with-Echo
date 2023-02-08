@@ -10,6 +10,7 @@ import (
 
 func main() {
 	db := config.ConnectToDB()
+	defer db.Close()
 
 	e := echo.New()
 
